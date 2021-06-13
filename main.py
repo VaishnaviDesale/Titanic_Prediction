@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 import uvicorn
 
 # Read csv file into a dataframe and select relevant columns.
-df = pd.read_csv("Data/train.csv", header=0)
+df = pd.read_csv("train.csv", header=0)
 df = df[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Survived']]
 
 # Assign a numerical value to the feature ‘gender’
