@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: sh setup.sh && streamlit run spotify_git.py
