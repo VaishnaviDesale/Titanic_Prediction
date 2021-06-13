@@ -1,17 +1,16 @@
-# Import relevant libraries.
+#Import relevant libraries.
 import pandas as pd
 import numpy as np
 import pickle
 import streamlit as st
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-import uvicorn
-
-# Read csv file into a dataframe and select relevant columns.
+from sklearn.ensemble import GradientBoostingClassifier
+#Read csv file into a dataframe and select relevant columns.
 df = pd.read_csv("train.csv", header=0)
 df = df[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Survived']]
 
-# Assign a numerical value to the feature ‘gender’
+#Assign a numerical value to the feature ‘gender’
 df['Sex'] = df['Sex'].astype('category')
 df["Sex"] = df['Sex'].cat.codes
 
@@ -54,21 +53,29 @@ X_test = sc.transform(X_test)
 
 # Now divide your data into Training, Test data and apply Naive Bayes classifier on train data and generate the classifier model. use pickle to store classifier model and load that model.
 
+# Import Gaussian Naive Bayes model
+from sklearn.naive_bayes import GaussianNB
 
-
-
+# Create a Gaussian Classifier
+model = GaussianNB()
 # Train the model using the training sets
+model.fit(X, y)
 
-from sklearn.ensemble import RandomForestClassifier
+#lr_list = [0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1]
 
-rforest = RandomForestClassifier(n_estimators=600, random_state=0)
-rforest.fit(X_train, y_train)
-predictions = rforest.predict(X_test)
-score = rforest.score(X_test, y_test)
-print(score)
+# for learning_rate in lr_list:
+#     model = GradientBoostingClassifier(n_estimators=20, learning_rate=learning_rate, max_features=2, max_depth=2, random_state=0)
+#     model.fit(X_train, y_train)
+#
+#     print("Learning rate: ", learning_rate)
+#     print("Accuracy score (training): {0:.3f}".format(model.score(X_train, y_train)))
+#     print("Accuracy score (validation): {0:.3f}".format(model.score(X_test, y_test)))
+# model = GradientBoostingClassifier(n_estimators=20, learning_rate=0.1, max_features=2, max_depth=2, random_state=0)
+# model.fit(X_train, y_train)
+# predictions = model.predict(X_test)
+# print("Accuracy score (validation): {0:.3f}".format(model.score(X_test, y_test)))
 
-
-pickle.dump(rforest, open('model.pkl', 'wb'))  # write binary
+pickle.dump(model, open('model.pkl', 'wb'))  # write binary
 
 loaded_model = pickle.load(open('model.pkl', 'rb'))
 
